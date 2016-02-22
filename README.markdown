@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/JaredRoth/hyde.png?label=ready&title=Ready)](https://waffle.io/JaredRoth/hyde)
 ## Hyde
 
 Initial scaffold for Turing's [Hyde Project](https://github.com/turingschool/curriculum/blob/master/source/projects/hyde/index.markdown)
