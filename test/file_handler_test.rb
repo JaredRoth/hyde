@@ -16,8 +16,8 @@ class FileHandlerTest < Minitest::Test
   end
 
   def test_it_recognizes_tilde_properly
-    @fh.create('~/test-dir')
-    @fh.move('~/test-dir')
+    @fh.create("#{Dir.home}/test-dir")
+    @fh.move("#{Dir.home}/test-dir")
 
     assert_equal "#{Dir.home}/test-dir", Dir.pwd
     @fh.move("../")
