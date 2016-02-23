@@ -14,4 +14,8 @@ class FileHandler
     FileUtils::mkdir_p "#{directory}/source/posts"
   end
 
+  def touch(file_name)
+    File.new(file_name, "w+")
+  end
+
 end
