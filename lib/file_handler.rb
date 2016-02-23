@@ -3,8 +3,9 @@ require 'fileutils'
 
 class FileHandler
 
-  def move(path)
-    FileUtils.cd(path)
+  def move(directory)
+    directory[0] = Dir.home if directory[0] == '~'
+    FileUtils.cd(directory)
   end
 
   def create(directory)
