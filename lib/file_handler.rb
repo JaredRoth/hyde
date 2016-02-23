@@ -19,13 +19,10 @@ class FileHandler
   end
 
   def populate_tree(directory)
-    move("#{directory}/source")
-    touch('index.markdown')
-    move("../css")
-    touch('main.css')
-    move("../pages")
-    touch('about.markdown')
-    move("../posts")
-    touch('2016-02-20-welcome-to-hyde.markdown')
+    # potentially collapse into array
+    touch("#{directory}/source/index.markdown")
+    touch("#{directory}/source/css/main.css")
+    touch("#{directory}/source/pages/about.markdown")
+    touch("#{directory}/source/posts/2016-02-20-welcome-to-hyde.markdown")
   end
 end
