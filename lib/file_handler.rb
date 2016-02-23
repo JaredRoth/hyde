@@ -8,7 +8,6 @@ class FileHandler
   end
 
   def create(directory)
-    binding.pry
     FileUtils::mkdir_p "#{directory}/output"
     FileUtils::mkdir_p "#{directory}/source/css"
     FileUtils::mkdir_p "#{directory}/source/pages"
