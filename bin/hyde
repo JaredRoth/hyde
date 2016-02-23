@@ -3,6 +3,8 @@
 args = ARGV
 puts "You ran Hyde with these arguments: #{args}"
 
+# change into the directory specified by args
+
 # ##############
 # Your code here
 # ##############
