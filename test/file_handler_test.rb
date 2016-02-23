@@ -1,6 +1,5 @@
 require 'minitest/autorun'
 require 'minitest/pride'
-require 'pry'
 require_relative '../lib/file_handler'
 
 class FileHandlerTest < Minitest::Test
