@@ -24,7 +24,7 @@ class FileHandlerTest < Minitest::Test
     @fh.move(@start_dir)
   end
 
-  def test_it_news_an_empty_directory
+  def test_it_creates_an_empty_directory
     @fh.create('test-dir')
 
     @fh.move('test-dir/output')
