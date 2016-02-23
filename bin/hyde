@@ -3,6 +3,18 @@
 require_relative '../lib/file_handler'
 
 args = ARGV
+method = args[0]
+path = args[1]
+fh = FileHandler.new
+
+return "That path already exists!\nChoose another." if path.exist?
+
+if method == "new"
+  fh.create_tree(path)
+  fh.populate_tree(path)
+end
+
+
 puts "You ran Hyde with these arguments: #{args}"
 
 # ##############
