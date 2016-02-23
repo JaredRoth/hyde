@@ -12,7 +12,6 @@ class FileHandlerTest < Minitest::Test
   def test_it_navigates_to_the_input_directory
     @fh.move('./lib')
     assert_equal "lib", File.basename(Dir.pwd)
-
     @fh.move(@start_dir)
   end
 
@@ -21,6 +20,8 @@ class FileHandlerTest < Minitest::Test
     @fh.move('~/test-dir')
 
     assert_equal "#{Dir.home}/test-dir", Dir.pwd
+    @fh.move("../")
+    FileUtils.remove_dir('./test-dir', force = true)
     @fh.move(@start_dir)
   end
 
@@ -45,6 +46,8 @@ class FileHandlerTest < Minitest::Test
 
     @fh.move('test-dir/source/posts')
     assert_equal 'posts', File.basename(Dir.pwd)
+    @fh.move('../../..')
+    FileUtils.remove_dir('./test-dir', force = true)
     @fh.move(@start_dir)
   end
 
@@ -55,7 +58,8 @@ class FileHandlerTest < Minitest::Test
     main = @fh.touch('main.css')
     assert File.exist?(main)
     assert_equal "", File.read('main.css')
-
+    @fh.move('../../..')
+    FileUtils.remove_dir('./test-dir', force = true)
     @fh.move(@start_dir)
   end
 end
