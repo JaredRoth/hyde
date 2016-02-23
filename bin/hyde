@@ -1,22 +1,13 @@
 #!/usr/bin/env ruby
 
 require_relative '../lib/file_handler'
+require_relative '../lib/hyde'
 
 args = ARGV
-method = args[0]
-path = args[1]
-fh = FileHandler.new
-
-return "That path already exists!\nChoose another." if path.exist?
-
-if method == "new"
-  fh.create_tree(path)
-  fh.populate_tree(path)
-end
-
 
 puts "You ran Hyde with these arguments: #{args}"
 
+Hyde.do_the_thing(argv[0], argv[1])
 # ##############
 # Your code here
 # ##############
