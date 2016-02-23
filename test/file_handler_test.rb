@@ -17,6 +17,7 @@ class FileHandlerTest < Minitest::Test
     fh.move('/test-dir/source/posts')
     assert_equal '/posts', FileUtils.pwd
   end
+  
   #create an empty directory in given directory
   #create, inside the new directory, an empty directory called output
   # and a directory called source.
