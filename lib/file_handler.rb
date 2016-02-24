@@ -16,6 +16,7 @@ class FileHandler
     FileUtils::mkdir_p "#{directory}/source/css"
     FileUtils::mkdir_p "#{directory}/source/pages"
     FileUtils::mkdir_p "#{directory}/source/posts"
+    FileUtils::mkdir_p "#{directory}/source/layouts"
   end
 
   def populate_tree(directory)

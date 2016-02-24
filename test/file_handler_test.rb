@@ -57,6 +57,10 @@ class FileHandlerTest < Minitest::Test
     @fh.move('test-dir/source/posts')
     assert_equal 'posts', File.basename(Dir.pwd)
     @fh.move('../../..')
+
+    @fh.move('test-dir/source/layouts')
+    assert_equal 'layouts', File.basename(Dir.pwd)
+    @fh.move('../../..')
   end
 
   def test_it_makes_a_new_empty_file_in_a_directory
