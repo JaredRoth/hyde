@@ -21,7 +21,6 @@ class FileHandler
   def populate_tree(directory)
     # potentially collapse into array
     touch("#{directory}/source/index.markdown")
-    # File.write("#{directory}/source/index.markdown", "# Some Markdown\n\n* a list\n* another item")
     touch("#{directory}/source/css/main.css")
     touch("#{directory}/source/pages/about.markdown")
     t = Time.new
@@ -46,11 +45,13 @@ class FileHandler
   end
 end
 
+# :nocov:
 if __FILE__ == $0
   fh = FileHandler.new
   dir = "test-dir"
   fh.create_tree(dir)
   fh.populate_tree(dir)
   fh.copy_source(dir)
-  # FileUtils.remove_dir('test-dir', force = true)
+  FileUtils.remove_dir('test-dir', force = true)
 end
+# :nocov:
