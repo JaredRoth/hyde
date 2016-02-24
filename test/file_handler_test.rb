@@ -27,8 +27,8 @@ class FileHandlerTest < Minitest::Test
   def test_it_creates_an_empty_directory
     @fh.create_tree('test-dir')
 
-    @fh.move('test-dir/output')
-    assert_equal 'output', File.basename(Dir.pwd)
+    @fh.move('test-dir/_output')
+    assert_equal '_output', File.basename(Dir.pwd)
     @fh.move('../..')
 
     @fh.move('test-dir/source')
@@ -72,5 +72,16 @@ class FileHandlerTest < Minitest::Test
     assert_equal true, File.exist?('test-dir/source/posts/2016-02-20-welcome-to-hyde.markdown')
     FileUtils.remove_dir('./test-dir', force = true)
     @fh.move(@start_dir)
+  end
+
+  def test_it_copies_source_contents_into_output
+    @fh.create_tree('test-dir')
+    @fh.populate_tree('test-dir')
+
+    @fh.copy_source('test-dir')
+    assert_equal true, File.exist?('test-dir/_output/index.markdown')
+    assert_equal true, File.exist?('test-dir/_output/css/main.css')
+    assert_equal true, File.exist?('test-dir/_output/pages/about.markdown')
+    assert_equal true, File.exist?('test-dir/_output/posts/2016-02-20-welcome-to-hyde.markdown')
   end
 end
