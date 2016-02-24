@@ -16,7 +16,6 @@ class FileHandler
     FileUtils::mkdir_p "#{directory}/source/css"
     FileUtils::mkdir_p "#{directory}/source/pages"
     FileUtils::mkdir_p "#{directory}/source/posts"
-
   end
 
   def populate_tree(directory)
@@ -29,35 +28,26 @@ class FileHandler
 
   def copy_source(directory)
     dir = Dir.pwd
-    FileUtils::mkdir_p "#{directory}/_output/css"
-    FileUtils::mkdir_p "#{directory}/_output/pages"
-    FileUtils::mkdir_p "#{directory}/_output/posts"
+    FileUtils::mkdir_p dir + "/#{directory}/_output/css"
+    FileUtils::mkdir_p dir + "/#{directory}/_output/pages"
+    FileUtils::mkdir_p dir + "/#{directory}/_output/posts"
 
-    Dir.foreach("#{directory}/source") do |filename|
-      next if File.directory?(filename)
-      if File.extname(filename) == ".markdown"
-        move("#{directory}/_output")
-        # # use kramdown
-        touch("#{directory}/_output/#{filename}")
-        move("#{directory}/source")
-      elsif !File.file?(filename)
-        move("#{directory}/source/#{filename}")
-        Dir.glob("*.{md,markdown}") do |file|
-          move("#{directory}/_output/#{filename}")
-          # # use kramdown
-          touch("#{directory}/_output/#{filename}/#{file}")
-          move("#{directory}/source/#{filename}")
-        end
-        move(dir)
-      end
+    FileUtils.copy_entry("#{directory}/source", "#{directory}/_output")
+
+
+    Dir.glob("#{directory}/_output/**/*.{md,markdown}") do |file|
+      # use kramdown
+      # delete markdown
+      puts file
     end
-    markdowns
   end
 end
 
 if __FILE__ == $0
   fh = FileHandler.new
-  fh.create_tree("test-dir")
-  fh.populate_tree("test-dir")
-  puts fh.copy_source("test-dir")
+  dir = "test-dir"
+  fh.create_tree(dir)
+  fh.populate_tree(dir)
+  fh.copy_source(dir)
+  # FileUtils.remove_dir('test-dir', force = true)
 end

@@ -3,15 +3,21 @@ require 'minitest/pride'
 require_relative '../lib/file_handler'
 
 class FileHandlerTest < Minitest::Test
+  DIR = Dir.pwd
+
   def setup
-    @start_dir = Dir.pwd
     @fh = FileHandler.new
   end
 
+  def teardown
+    @fh.move(DIR)
+    FileUtils.remove_dir('test-dir', force = true)
+  end
+
   def test_it_navigates_to_the_input_directory
+    puts Dir.pwd
     @fh.move('./lib')
     assert_equal "lib", File.basename(Dir.pwd)
-    @fh.move(@start_dir)
   end
 
   def test_it_recognizes_tilde_properly
@@ -20,8 +26,6 @@ class FileHandlerTest < Minitest::Test
 
     assert_equal "#{Dir.home}/test-dir", Dir.pwd
     @fh.move("../")
-    FileUtils.remove_dir('./test-dir', force = true)
-    @fh.move(@start_dir)
   end
 
   def test_it_creates_an_empty_directory
@@ -46,8 +50,6 @@ class FileHandlerTest < Minitest::Test
     @fh.move('test-dir/source/posts')
     assert_equal 'posts', File.basename(Dir.pwd)
     @fh.move('../../..')
-    FileUtils.remove_dir('./test-dir', force = true)
-    @fh.move(@start_dir)
   end
 
   def test_it_makes_a_new_empty_file_in_a_directory
@@ -58,8 +60,6 @@ class FileHandlerTest < Minitest::Test
     assert File.exist?(main)
     assert_equal "", File.read('main.css')
     @fh.move('../../..')
-    FileUtils.remove_dir('./test-dir', force = true)
-    @fh.move(@start_dir)
   end
 
   def test_it_populates_the_empty_directory
@@ -70,14 +70,11 @@ class FileHandlerTest < Minitest::Test
     assert_equal true, File.exist?('test-dir/source/css/main.css')
     assert_equal true, File.exist?('test-dir/source/pages/about.markdown')
     assert_equal true, File.exist?('test-dir/source/posts/2016-02-20-welcome-to-hyde.markdown')
-    FileUtils.remove_dir('./test-dir', force = true)
-    @fh.move(@start_dir)
   end
 
   def test_it_copies_source_contents_into_output
     @fh.create_tree('test-dir')
     @fh.populate_tree('test-dir')
-
     @fh.copy_source('test-dir')
     assert_equal true, File.exist?('test-dir/_output/index.markdown')
     assert_equal true, File.exist?('test-dir/_output/css/main.css')
