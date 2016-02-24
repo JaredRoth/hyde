@@ -43,6 +43,12 @@ class FileHandler
       File.delete(file)
     end
   end
+
+  def post_template(directory, title)
+    t = Time.new
+    filename = "#{directory}/source/posts/#{t.strftime("%F")}-#{title.downcase.gsub(" ", "-")}.markdown"
+    File.write(filename, "# #{title}\n\nyour content here...")
+  end
 end
 
 # :nocov:
@@ -51,7 +57,9 @@ if __FILE__ == $0
   dir = "test-dir"
   fh.create_tree(dir)
   fh.populate_tree(dir)
+  fh.post_template(dir, "My Post")
   fh.copy_source(dir)
-  FileUtils.remove_dir('test-dir', force = true)
+
+  # FileUtils.remove_dir('test-dir', force = true)
 end
 # :nocov:
