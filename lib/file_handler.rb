@@ -1,5 +1,5 @@
-require 'pry'
 require 'fileutils'
+require "kramdown"
 
 class FileHandler
 
@@ -33,10 +33,15 @@ class FileHandler
 
     FileUtils.copy_entry("#{directory}/source", "#{directory}/_output")
 
-
     Dir.glob("#{directory}/_output/**/*.{md,markdown}") do |file|
-      # use kramdown
-      # delete markdown
+      new_filename = file.sub(".markdown", ".html")
+      markdown = File.read(file)
+      html = Kramdown::Document.new(markdown).to_html
+      File.new(new_filename)
+      File.open(new_filename) do
+        html
+      end
+      File.delete(file)
     end
   end
 end

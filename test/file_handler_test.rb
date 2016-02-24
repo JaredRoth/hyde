@@ -75,9 +75,9 @@ class FileHandlerTest < Minitest::Test
     @fh.create_tree('test-dir')
     @fh.populate_tree('test-dir')
     @fh.copy_source('test-dir')
-    assert_equal true, File.exist?('test-dir/_output/index.markdown')
+    assert_equal true, File.exist?('test-dir/_output/index.html')
     assert_equal true, File.exist?('test-dir/_output/css/main.css')
-    assert_equal true, File.exist?('test-dir/_output/pages/about.markdown')
-    assert_equal true, File.exist?('test-dir/_output/posts/2016-02-20-welcome-to-hyde.markdown')
+    assert_equal true, File.exist?('test-dir/_output/pages/about.html')
+    assert_equal true, File.exist?('test-dir/_output/posts/2016-02-20-welcome-to-hyde.html')
   end
 end
