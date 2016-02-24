@@ -7,7 +7,7 @@ args = ARGV
 
 puts "You ran Hyde with these arguments: #{args}"
 
-Hyde.do_the_thing(argv[0], argv[1])
+Hyde.process_subcommand(argv[0], argv[1])
 # ##############
 # Your code here
 # ##############
