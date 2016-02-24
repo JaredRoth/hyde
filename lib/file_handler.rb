@@ -27,10 +27,9 @@ class FileHandler
   end
 
   def copy_source(directory)
-    dir = Dir.pwd
-    FileUtils::mkdir_p dir + "/#{directory}/_output/css"
-    FileUtils::mkdir_p dir + "/#{directory}/_output/pages"
-    FileUtils::mkdir_p dir + "/#{directory}/_output/posts"
+    FileUtils::mkdir_p "#{directory}/_output/css"
+    FileUtils::mkdir_p "#{directory}/_output/pages"
+    FileUtils::mkdir_p "#{directory}/_output/posts"
 
     FileUtils.copy_entry("#{directory}/source", "#{directory}/_output")
 
@@ -38,7 +37,6 @@ class FileHandler
     Dir.glob("#{directory}/_output/**/*.{md,markdown}") do |file|
       # use kramdown
       # delete markdown
-      puts file
     end
   end
 end

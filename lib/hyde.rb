@@ -11,8 +11,6 @@ class Hyde
       fh.create_tree(path)
       fh.populate_tree(path)
     elsif method == "build"
-      fh.
-      fh.
     end
   end
 

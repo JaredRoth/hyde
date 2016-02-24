@@ -15,7 +15,6 @@ class FileHandlerTest < Minitest::Test
   end
 
   def test_it_navigates_to_the_input_directory
-    puts Dir.pwd
     @fh.move('./lib')
     assert_equal "lib", File.basename(Dir.pwd)
   end
