@@ -3,11 +3,11 @@
 require_relative '../lib/file_handler'
 require_relative '../lib/hyde'
 
-args = ARGV
+argv = ARGV
 
-puts "You ran Hyde with these arguments: #{args}"
+puts "You ran Hyde with these arguments: #{argv}"
 
-Hyde.process_subcommand(argv[0], argv[1])
+Hyde.process_subcommand(ARGV)
 # ##############
 # Your code here
 # ##############

@@ -26,6 +26,15 @@ class FileHandlerTest < Minitest::Test
     @fh.move("../")
   end
 
+  def test_it_creates_a_post_template
+    t = Time.new
+    @fh.create_tree('test-dir')
+    @fh.populate_tree('test-dir')
+    @fh.post_template('test-dir', "Juicy Post")
+    assert_equal true, File.exist?("test-dir/source/posts/#{t.strftime("%F")}-juicy-post.markdown")
+    assert_equal "# Juicy Post\n\nyour content here...", File.read("test-dir/source/posts/#{t.strftime("%F")}-juicy-post.markdown")
+  end
+
   def test_it_creates_an_empty_directory
     @fh.create_tree('test-dir')
 
