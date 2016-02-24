@@ -21,9 +21,11 @@ class FileHandler
   def populate_tree(directory)
     # potentially collapse into array
     touch("#{directory}/source/index.markdown")
+    # File.write("#{directory}/source/index.markdown", "# Some Markdown\n\n* a list\n* another item")
     touch("#{directory}/source/css/main.css")
     touch("#{directory}/source/pages/about.markdown")
-    touch("#{directory}/source/posts/2016-02-20-welcome-to-hyde.markdown")
+    t = Time.new
+    touch("#{directory}/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")
   end
 
   def copy_source(directory)
@@ -34,13 +36,11 @@ class FileHandler
     FileUtils.copy_entry("#{directory}/source", "#{directory}/_output")
 
     Dir.glob("#{directory}/_output/**/*.{md,markdown}") do |file|
+      new_filename = file.sub(".md", ".html")
       new_filename = file.sub(".markdown", ".html")
       markdown = File.read(file)
       html = Kramdown::Document.new(markdown).to_html
-      File.new(new_filename)
-      File.open(new_filename) do
-        html
-      end
+      File.write(new_filename, html)
       File.delete(file)
     end
   end

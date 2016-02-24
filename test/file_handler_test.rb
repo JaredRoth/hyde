@@ -62,22 +62,24 @@ class FileHandlerTest < Minitest::Test
   end
 
   def test_it_populates_the_empty_directory
+    t = Time.new
     @fh.create_tree('test-dir')
 
     @fh.populate_tree('test-dir')
     assert_equal true, File.exist?('test-dir/source/index.markdown')
     assert_equal true, File.exist?('test-dir/source/css/main.css')
     assert_equal true, File.exist?('test-dir/source/pages/about.markdown')
-    assert_equal true, File.exist?('test-dir/source/posts/2016-02-20-welcome-to-hyde.markdown')
+    assert_equal true, File.exist?("test-dir/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")
   end
 
   def test_it_copies_source_contents_into_output
+    t = Time.new
     @fh.create_tree('test-dir')
     @fh.populate_tree('test-dir')
     @fh.copy_source('test-dir')
     assert_equal true, File.exist?('test-dir/_output/index.html')
     assert_equal true, File.exist?('test-dir/_output/css/main.css')
     assert_equal true, File.exist?('test-dir/_output/pages/about.html')
-    assert_equal true, File.exist?('test-dir/_output/posts/2016-02-20-welcome-to-hyde.html')
+    assert_equal true, File.exist?("test-dir/_output/posts/#{t.strftime("%F")}-welcome-to-hyde.html")
   end
 end
