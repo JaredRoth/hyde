@@ -6,41 +6,24 @@ body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 13px;
     color:#333
+    background-color:
 }
 
 p {
     padding: 10px;
+    background-color:
 }
 
-#wrapper {
-    margin: 0 auto;
-    width: 1000px;
+h1 {
+
+
 }
 
-#headerwrap {
-    width: 1000px;
-    float: left;
-    margin: 0 auto;
+ul {
+
+
 }
 
-#header {
-    height: 75px;
-    background: #FF1261;
-    border-radius: 10px;
-    border: 1px solid #eb004d;
-    margin: 5px;
-}
+blockquote {
 
-#contentwrap {
-    width: 1000;
-    float: left;
-    margin: 0 auto;
 }
-
-#content {
-    background: #E8FFE6;
-    border-radius: 10px;
-    border: 1px solid #d4ebd2;
-    margin: 5px;
-}
-

@@ -22,7 +22,17 @@ class FileHandlerTest < Minitest::Test
     @fh.create_tree
     @fh.populate_tree
 
-    assert_equal "<html>\n  <head><title>Our Site</title></head>\n  <body>\n    Some words\n  </body>\n</html>", @fh.inject("Some words")
+    assert_equal "<html>
+  <head><title>Our Site</title>
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"css/test2.css\">
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"../css/test2.css\">
+  </head>
+    <body>
+    Some words
+    </body>
+</html>
+",
+    @fh.inject("Some words")
   end
 
   def test_it_creates_a_post_template
@@ -75,7 +85,16 @@ class FileHandlerTest < Minitest::Test
     assert_equal true, File.exist?('test-dir/source/pages/about.markdown')
     assert_equal true, File.exist?('test-dir/source/layouts/default.html.erb')
     assert_equal true, File.exist?("test-dir/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")
-    assert_equal "<html>\n  <head><title>Our Site</title></head>\n  <body>\n    <%= html %>\n  </body>\n</html>", File.read('test-dir/source/layouts/default.html.erb')
+    assert_equal "<html>
+  <head><title>Our Site</title>
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"css/test2.css\">
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"../css/test2.css\">
+  </head>
+    <body>
+    <%= html %>
+    </body>
+</html>
+", File.read('test-dir/source/layouts/default.html.erb')
   end
 
   def test_it_copies_source_contents_into_output
