@@ -1,12 +1,17 @@
 require_relative 'file_handler'
 
 class Hyde
+  attr_reader :method, :path, :args, :fh
 
-  def self.process_subcommand(argv)
-    method = argv[0]
-    path = argv[1]
-    args = argv[2..-1].join
-    fh = FileHandler.new(path)
+  def initialize(argv)
+    @method = argv[0]
+    @path = argv[1]
+    @args = argv[2..-1].join
+    @fh = FileHandler.new(path)
+  end
+
+  def process_subcommand
+    
     if method == "new"
       if Dir.exist?(path)
         puts "That path already exists! Try again."
