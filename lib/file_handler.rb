@@ -20,8 +20,14 @@ class FileHandler
 
   def populate_tree(directory)
     # potentially collapse into array
+    css_1 = File.read('test1.css')
+    css_2 = File.read('test2.css')
+    css_3 = File.read('test3.css')
     touch("#{directory}/source/index.markdown")
-    touch("#{directory}/source/css/main.css")
+    #touch("#{directory}/source/css/main.css")
+    File.write(("#{directory}/source/css/test1.css"), css_1)
+    File.write(("#{directory}/source/css/test2.css"), css_2)
+    File.write(("#{directory}/source/css/test3.css"), css_3)
     touch("#{directory}/source/pages/about.markdown")
     t = Time.new
     touch("#{directory}/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")

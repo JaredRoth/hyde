@@ -75,7 +75,9 @@ class FileHandlerTest < Minitest::Test
 
     @fh.populate_tree('test-dir')
     assert_equal true, File.exist?('test-dir/source/index.markdown')
-    assert_equal true, File.exist?('test-dir/source/css/main.css')
+    assert_equal true, File.exist?('test-dir/source/css/test1.css')
+    assert_equal true, File.exist?('test-dir/source/css/test2.css')
+    assert_equal true, File.exist?('test-dir/source/css/test3.css')
     assert_equal true, File.exist?('test-dir/source/pages/about.markdown')
     assert_equal true, File.exist?("test-dir/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")
   end
@@ -86,7 +88,9 @@ class FileHandlerTest < Minitest::Test
     @fh.populate_tree('test-dir')
     @fh.copy_source('test-dir')
     assert_equal true, File.exist?('test-dir/_output/index.html')
-    assert_equal true, File.exist?('test-dir/_output/css/main.css')
+    assert_equal true, File.exist?('test-dir/source/css/test1.css')
+    assert_equal true, File.exist?('test-dir/source/css/test2.css')
+    assert_equal true, File.exist?('test-dir/source/css/test3.css')
     assert_equal true, File.exist?('test-dir/_output/pages/about.html')
     assert_equal true, File.exist?("test-dir/_output/posts/#{t.strftime("%F")}-welcome-to-hyde.html")
   end
