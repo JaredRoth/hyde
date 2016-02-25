@@ -3,14 +3,21 @@ GEM
   specs:
     coderay (1.1.1)
     docile (1.1.5)
+    ffi (1.9.10)
     json (1.8.3)
     kramdown (1.9.0)
+    listen (3.0.6)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9.7)
     method_source (0.8.2)
     minitest (5.8.4)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rb-fsevent (0.9.7)
+    rb-inotify (0.9.7)
+      ffi (>= 0.5.0)
     simplecov (0.11.2)
       docile (~> 1.1.0)
       json (~> 1.8)
@@ -23,6 +30,7 @@ PLATFORMS
 
 DEPENDENCIES
   kramdown
+  listen (~> 3.0)
   minitest
   pry
   simplecov
