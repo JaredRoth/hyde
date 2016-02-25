@@ -1,5 +1,6 @@
 require 'fileutils'
-require "kramdown"
+require 'kramdown'
+require 'erb'
 
 class FileHandler
 
@@ -20,10 +21,10 @@ class FileHandler
   end
 
   def populate_tree(directory)
-    # potentially collapse into array
     touch("#{directory}/source/index.markdown")
     touch("#{directory}/source/css/main.css")
     touch("#{directory}/source/pages/about.markdown")
+    touch("#{directory}/source/layouts/default.html.erb")
     t = Time.new
     touch("#{directory}/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")
   end
