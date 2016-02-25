@@ -8,10 +8,6 @@ class FileHandler
     FileUtils.cd(directory)
   end
 
-  def touch(file_name)
-    File.new(file_name, "w+")
-  end
-
   def create_tree(directory)
     FileUtils::mkdir_p "#{directory}/_output"
     FileUtils::mkdir_p "#{directory}/source/css"
@@ -21,12 +17,12 @@ class FileHandler
 
   def populate_tree(directory)
     # potentially collapse into array
-    css_1 = File.read('test1.css')
-    css_2 = File.read('test2.css')
-    css_3 = File.read('test3.css')
-    index = File.read('index.markdown')
-    about = File.read('about.markdown')
-    post_welcome = File.read('welcome-to-hyde.markdown')
+    css_1 = File.read('lib/test1.css')
+    css_2 = File.read('lib/test2.css')
+    css_3 = File.read('lib/test3.css')
+    index = File.read('lib/index.markdown')
+    about = File.read('lib/about.markdown')
+    post_welcome = File.read('lib/welcome-to-hyde.markdown')
     #touch("#{directory}/source/index.markdown")
     #touch("#{directory}/source/css/main.css")
     #touch("#{directory}/source/pages/about.markdown")

@@ -11,6 +11,7 @@ class Hyde
       return "That path already exists! Try again." if File.exist?(path)
       fh.create_tree(path)
       fh.populate_tree(path)
+      "#{path} (new)"
     elsif method == "build"
       fh.copy_source(path)
       "#{path} (build)"

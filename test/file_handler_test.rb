@@ -59,19 +59,6 @@ class FileHandlerTest < Minitest::Test
     @fh.move('../../..')
   end
 
-  def test_it_makes_a_new_empty_file_in_a_directory
-    @fh.create_tree('test-dir')
-
-    @fh.move('test-dir/source/css')
-    # this is currently the only place we are using touch
-    # we could delete the method, or MAYBE
-    # refactor populate_tree to use it again
-    main = @fh.touch('main.css')
-    assert File.exist?(main)
-    assert_equal "", File.read('main.css')
-    @fh.move('../../..')
-  end
-
   def test_it_populates_the_empty_directory
     t = Time.new
     @fh.create_tree('test-dir')
