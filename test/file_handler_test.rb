@@ -5,7 +5,7 @@ class FileHandlerTest < Minitest::Test
   DIR = Dir.pwd
 
   def setup
-    @fh = FileHandler.new
+    @fh = FileHandler.new('test-dir')
   end
 
   def teardown
@@ -18,8 +18,15 @@ class FileHandlerTest < Minitest::Test
     assert_equal "lib", File.basename(Dir.pwd)
   end
 
+  def test_it_injects_html
+    @fh.create_tree
+    @fh.populate_tree
+
+    assert_equal "<html>\n  <head><title>Our Site</title></head>\n  <body>\n    Some words\n  </body>\n</html>", @fh.inject("Some words")
+  end
+
   def test_it_recognizes_tilde_properly
-    @fh.create_tree("#{Dir.home}/test-dir")
+    @fh.create_tree
     @fh.move("#{Dir.home}/test-dir")
 
     assert_equal "#{Dir.home}/test-dir", Dir.pwd
@@ -27,17 +34,16 @@ class FileHandlerTest < Minitest::Test
   end
 
   def test_it_creates_a_post_template
-    skip
     t = Time.new
-    @fh.create_tree('test-dir')
-    @fh.populate_tree('test-dir')
-    @fh.post_template('test-dir', "Juicy Post")
+    @fh.create_tree
+    @fh.populate_tree
+    @fh.post_template("Juicy Post")
     assert_equal true, File.exist?("test-dir/source/posts/#{t.strftime("%F")}-juicy-post.markdown")
-    assert_equal "# Juicy Post\n\nyour content here...", File.read("test-dir/source/posts/#{t.strftime("%F")}-juicy-post.markdown")
+    assert_equal "# Juicy Post\n\nyour content here", File.read("test-dir/source/posts/#{t.strftime("%F")}-juicy-post.markdown")
   end
 
   def test_it_creates_an_empty_directory
-    @fh.create_tree('test-dir')
+    @fh.create_tree
 
     @fh.move('test-dir/_output')
     assert_equal '_output', File.basename(Dir.pwd)
@@ -65,7 +71,7 @@ class FileHandlerTest < Minitest::Test
   end
 
   def test_it_makes_a_new_empty_file_in_a_directory
-    @fh.create_tree('test-dir')
+    @fh.create_tree
 
     @fh.move('test-dir/source/css')
     main = @fh.touch('main.css')
@@ -76,22 +82,22 @@ class FileHandlerTest < Minitest::Test
 
   def test_it_populates_the_empty_directory
     t = Time.new
-    @fh.create_tree('test-dir')
+    @fh.create_tree
 
-    @fh.populate_tree('test-dir')
+    @fh.populate_tree
     assert_equal true, File.exist?('test-dir/source/index.markdown')
     assert_equal true, File.exist?('test-dir/source/css/main.css')
     assert_equal true, File.exist?('test-dir/source/pages/about.markdown')
     assert_equal true, File.exist?('test-dir/source/layouts/default.html.erb')
     assert_equal true, File.exist?("test-dir/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")
+    assert_equal "<html>\n  <head><title>Our Site</title></head>\n  <body>\n    <%= html %>\n  </body>\n</html>", File.read('test-dir/source/layouts/default.html.erb')
   end
 
   def test_it_copies_source_contents_into_output
-    skip
     t = Time.new
-    @fh.create_tree('test-dir')
-    @fh.populate_tree('test-dir')
-    @fh.copy_source('test-dir')
+    @fh.create_tree
+    @fh.populate_tree
+    @fh.copy_source
     assert_equal true, File.exist?('test-dir/_output/index.html')
     assert_equal true, File.exist?('test-dir/_output/css/main.css')
     assert_equal true, File.exist?('test-dir/_output/pages/about.html')
