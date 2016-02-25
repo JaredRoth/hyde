@@ -5,13 +5,13 @@
 body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 13px;
-    color:#333
-    background-color:
+    color: #331a00;
+    background-color: #e5f9ff
 }
 
 p {
     padding: 10px;
-    background-color:
+    color:#b30000
 }
 
 h1 {
