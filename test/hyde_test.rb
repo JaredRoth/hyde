@@ -14,7 +14,7 @@ class HydeTest < Minitest::Test
   end
 
   def test_it_understands_the_new_command
-    assert_equal File, Hyde.process_subcommand(["new", "test-dir"]).class
+    assert_equal "test-dir (new)", Hyde.process_subcommand(["new", "test-dir"])
   end
 
   def test_it_returns_error_if_dir_exists
