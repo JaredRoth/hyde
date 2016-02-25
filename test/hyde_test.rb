@@ -5,13 +5,18 @@ class HydeTest < Minitest::Test
   DIR = Dir.pwd
 
   def setup
-
     @fh = FileHandler.new('test-dir')
+    $stdout = StringIO.new
   end
 
   def teardown
     @fh.move(DIR)
     FileUtils.remove_dir('test-dir', force = true)
+  end
+
+  def test_it_removes_leading_slash
+    hyde = Hyde.new(["new", "/test-dir"])
+    assert_equal "test-dir (new)", hyde.process_subcommand
   end
 
   def test_it_understands_the_new_command
@@ -44,5 +49,10 @@ class HydeTest < Minitest::Test
     hyde.process_subcommand
     hyde = Hyde.new(["watchfs", "test-dir", "0.1"])
     assert_equal "test-dir, (watchfs)", hyde.process_subcommand
+  end
+
+  def test_it_rejects_bad_commands
+    hyde = Hyde.new(["pizza", "test-dir"])
+    assert_equal "Error", hyde.process_subcommand
   end
 end

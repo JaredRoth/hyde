@@ -27,35 +27,33 @@ class FileHandler
     FileUtils::mkdir_p "#{directory}/source/layouts"
   end
 
-  def populate_tree
-    t       = Time.new
-    css_1   = File.read('lib/test1.css')
-    css_2   = File.read('lib/test2.css')
-    css_3   = File.read('lib/test3.css')
-    index   = File.read('lib/index.markdown')
-    about   = File.read('lib/about.markdown')
-    welcome = File.read('lib/welcome-to-hyde.markdown')
-    layout  = File.read('lib/default.html.erb')
+  def source_files(input, output)
+    File.write(output, File.read(input))
+  end
 
-    File.write("#{directory}/source/pages/about.markdown", about)
-    File.write("#{directory}/source/index.markdown", index)
-    File.write("#{directory}/source/css/test1.css", css_1)
-    File.write("#{directory}/source/css/test2.css", css_2)
-    File.write("#{directory}/source/css/test3.css", css_3)
-    File.write("#{directory}/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown", welcome)
-    File.write("#{directory}/source/layouts/default.html.erb", layout)
+  def populate_tree
+    source_files = [
+      ['test2.css', 'css/test2.css'],
+      ['about.markdown', 'index.markdown'],
+      ['index.markdown', 'pages/about.markdown'],
+      ['default.html.erb', 'layouts/default.html.erb'],
+      ['welcome-to-hyde.markdown',
+        "posts/#{Time.new.strftime("%F")}-welcome-to-hyde.markdown"]
+      ]
+    source_files.each do |subarray|
+      source_files('lib/'+subarray[0],"#{directory}/source/"+subarray[1])
+    end
   end
 
   def copy_source
-    FileUtils::mkdir_p "#{directory}/_output/css"
-    FileUtils::mkdir_p "#{directory}/_output/pages"
-    FileUtils::mkdir_p "#{directory}/_output/posts"
-
     FileUtils.copy_entry("#{directory}/source", "#{directory}/_output")
 
+    parse_to_html
+  end
+
+  def parse_to_html
     Dir.glob("#{directory}/_output/**/*.{md,markdown}") do |file|
-      new_file_ext = file.sub(".md", ".html")
-      new_file_ext = file.sub(".markdown", ".html")
+      new_file_ext = file.sub(/(.md|.markdown)/, ".html")
       markdown     = File.read(file)
       html         = Kramdown::Document.new(markdown).to_html
       formatted    = inject(html)
@@ -67,7 +65,8 @@ class FileHandler
 
   def post_template(title)
     t = Time.new
-    filename = "#{directory}/source/posts/#{t.strftime("%F")}-#{title.downcase.gsub(" ", "-")}.markdown"
+    filename = "#{directory}/source/posts/#{t.strftime("%F")}" +
+    "-#{title.downcase.gsub(" ", "-")}.markdown"
     File.write(filename, "# #{title}\n\nyour content here")
   end
 end
@@ -81,6 +80,6 @@ if __FILE__ == $0
   fh.populate_tree
   fh.post_template("My Post")
   fh.copy_source
-  # FileUtils.remove_dir('test-dir', force = true)
+  FileUtils.remove_dir('test-dir', force = true)
 end
 # :nocov:
