@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'kramdown'
 require 'erb'
+require 'listen'
 
 class FileHandler
   attr_reader :directory
@@ -35,7 +36,8 @@ class FileHandler
     touch("#{directory}/source/pages/about.markdown")
     touch("#{directory}/source/layouts/default.html.erb")
     File.write("#{directory}/source/layouts/default.html.erb",
-    "<html>\n  <head><title>Our Site</title></head>\n  <body>\n    <%= html %>\n  </body>\n</html>")
+    "<html>\n  <head><title>Our Site</title></head>\n  " + 
+    "<body>\n    <%= html %>\n  </body>\n</html>")
     t = Time.new
     touch("#{directory}/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")
   end
@@ -46,7 +48,6 @@ class FileHandler
     FileUtils::mkdir_p "#{directory}/_output/posts"
 
     FileUtils.copy_entry("#{directory}/source", "#{directory}/_output")
-    FileUtils.copy_entry("#{directory}/source/css/main.css", "#{directory}/_output/css/main.css")
 
     Dir.glob("#{directory}/_output/**/*.{md,markdown}") do |file|
       new_file_ext = file.sub(".md", ".html")
@@ -68,13 +69,25 @@ end
 
 # :nocov:
 if __FILE__ == $0
-  fh = FileHandler.new
   dir = "test-dir"
-  fh.create_tree(dir)
-  fh.populate_tree(dir)
-  fh.post_template(dir, "My Post")
-  fh.copy_source(dir)
+  fh = FileHandler.new(dir)
+  puts fh.directory + '/source'
+  # fh.create_tree
+  # fh.populate_tree
+  # fh.post_template("My Post")
+  # fh.copy_source
 
+  listener = Listen.to(dir + '/source/posts') do |modified, added, removed|
+    puts "modified absolute path: #{modified}"
+    puts "added absolute path: #{added}"
+    puts "removed absolute path: #{removed}"
+    fh.copy_source
+  end
+  listener.start
+  listener.pause
+  fh.post_template("New Post")
+  listener.start
+  listener.stop
   # FileUtils.remove_dir('test-dir', force = true)
 end
 # :nocov:

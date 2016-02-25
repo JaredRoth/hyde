@@ -25,21 +25,14 @@ class FileHandlerTest < Minitest::Test
     assert_equal "<html>\n  <head><title>Our Site</title></head>\n  <body>\n    Some words\n  </body>\n</html>", @fh.inject("Some words")
   end
 
-  def test_it_recognizes_tilde_properly
-    @fh.create_tree
-    @fh.move("#{Dir.home}/test-dir")
-
-    assert_equal "#{Dir.home}/test-dir", Dir.pwd
-    @fh.move("../")
-  end
-
   def test_it_creates_a_post_template
     t = Time.new
     @fh.create_tree
     @fh.populate_tree
     @fh.post_template("Juicy Post")
     assert_equal true, File.exist?("test-dir/source/posts/#{t.strftime("%F")}-juicy-post.markdown")
-    assert_equal "# Juicy Post\n\nyour content here", File.read("test-dir/source/posts/#{t.strftime("%F")}-juicy-post.markdown")
+    assert_equal "# Juicy Post\n\nyour content here",
+    File.read("test-dir/source/posts/#{t.strftime("%F")}-juicy-post.markdown")
   end
 
   def test_it_creates_an_empty_directory

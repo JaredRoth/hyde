@@ -13,14 +13,14 @@ class HydeTest < Minitest::Test
     FileUtils.remove_dir('test-dir', force = true)
   end
 
-  def test_it_returns_error_if_dir_exists
-    @fh.create_tree
-    assert_equal "That path already exists! Try again.",
-      Hyde.process_subcommand(['new', 'test-dir'])
-  end
-
   def test_it_understands_the_new_command
     assert_equal File, Hyde.process_subcommand(["new", "test-dir"]).class
+  end
+
+  def test_it_returns_error_if_dir_exists
+    @fh.create_tree
+    assert_equal "Error",
+    Hyde.process_subcommand(['new', 'test-dir'])
   end
 
   def test_it_understands_the_build_command
@@ -31,5 +31,10 @@ class HydeTest < Minitest::Test
   def test_it_understands_the_post_command
     Hyde.process_subcommand(['new', 'test-dir'])
     assert_equal "test-dir, My Post (post)", Hyde.process_subcommand(["post", "test-dir", "My Post"])
+  end
+
+  def test_it_understands_the_watchfs_command_with_one_or_two_ARGS
+    Hyde.process_subcommand(['new', 'test-dir'])
+    assert_equal "test-dir, (watchfs)", Hyde.process_subcommand(["watchfs", "test-dir", "0.1"])
   end
 end
