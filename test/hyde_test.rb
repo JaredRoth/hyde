@@ -5,7 +5,7 @@ class HydeTest < Minitest::Test
   DIR = Dir.pwd
 
   def setup
-    @fh = FileHandler.new
+    @fh = FileHandler.new('test-dir')
   end
 
   def teardown
@@ -14,7 +14,7 @@ class HydeTest < Minitest::Test
   end
 
   def test_it_returns_error_if_dir_exists
-    @fh.create_tree('test-dir')
+    @fh.create_tree
     assert_equal "That path already exists! Try again.",
       Hyde.process_subcommand(['new', 'test-dir'])
   end
