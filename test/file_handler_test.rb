@@ -63,6 +63,9 @@ class FileHandlerTest < Minitest::Test
     @fh.create_tree('test-dir')
 
     @fh.move('test-dir/source/css')
+    # this is currently the only place we are using touch
+    # we could delete the method, or MAYBE
+    # refactor populate_tree to use it again
     main = @fh.touch('main.css')
     assert File.exist?(main)
     assert_equal "", File.read('main.css')

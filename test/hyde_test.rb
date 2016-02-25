@@ -20,6 +20,7 @@ class HydeTest < Minitest::Test
   end
 
   def test_it_understands_the_new_command
+    #need to monkey with this test, class now returns Fixnum
     assert_equal File, Hyde.process_subcommand(["new", "test-dir"]).class
   end
 

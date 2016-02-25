@@ -1,5 +1,6 @@
 require 'fileutils'
 require "kramdown"
+require 'pry'
 
 class FileHandler
 
@@ -23,14 +24,20 @@ class FileHandler
     css_1 = File.read('test1.css')
     css_2 = File.read('test2.css')
     css_3 = File.read('test3.css')
-    touch("#{directory}/source/index.markdown")
+    index = File.read('index.markdown')
+    about = File.read('about.markdown')
+    post_welcome = File.read('welcome-to-hyde.markdown')
+    #touch("#{directory}/source/index.markdown")
     #touch("#{directory}/source/css/main.css")
+    #touch("#{directory}/source/pages/about.markdown")
+    File.write(("#{directory}/source/pages/about.markdown"), about)
+    File.write(("#{directory}/source/index.markdown"), index)
     File.write(("#{directory}/source/css/test1.css"), css_1)
     File.write(("#{directory}/source/css/test2.css"), css_2)
     File.write(("#{directory}/source/css/test3.css"), css_3)
-    touch("#{directory}/source/pages/about.markdown")
     t = Time.new
-    touch("#{directory}/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")
+    #touch("#{directory}/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown")
+    File.write(("#{directory}/source/posts/#{t.strftime("%F")}-welcome-to-hyde.markdown"), post_welcome)
   end
 
   def copy_source(directory)
@@ -63,6 +70,9 @@ if __FILE__ == $0
   dir = "test-dir"
   fh.create_tree(dir)
   fh.populate_tree(dir)
+  #running the next line throws a wrench-
+  #welcome-to-hyde appears in output, but is blank in source.
+  #I am currently feeling a little confused about how 'post' is supposed to be used
   fh.post_template(dir, "My Post")
   fh.copy_source(dir)
 
