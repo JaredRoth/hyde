@@ -14,6 +14,7 @@ class Hyde
       end
       fh.create_tree
       fh.populate_tree
+      "#{path} (new)"
     elsif method == "build"
       fh.copy_source
       "#{path} (build)"
