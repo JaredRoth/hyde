@@ -18,57 +18,6 @@ class FileHandler
   def inject(html)
     ERB.new(File.read("#{directory}/source/layouts/default.html.erb")).result(binding)
   end
-
-  def create_tree
-    FileUtils::mkdir_p "#{directory}/_output"
-    FileUtils::mkdir_p "#{directory}/source/css"
-    FileUtils::mkdir_p "#{directory}/source/pages"
-    FileUtils::mkdir_p "#{directory}/source/posts"
-    FileUtils::mkdir_p "#{directory}/source/layouts"
-  end
-
-  def source_files(input, output)
-    File.write(output, File.read(input))
-  end
-
-  def populate_tree
-    source_files = [
-      ['test2.css', 'css/test2.css'],
-      ['about.markdown', 'index.markdown'],
-      ['index.markdown', 'pages/about.markdown'],
-      ['default.html.erb', 'layouts/default.html.erb'],
-      ['welcome-to-hyde.markdown',
-        "posts/#{Time.new.strftime("%F")}-welcome-to-hyde.markdown"]
-      ]
-    source_files.each do |subarray|
-      source_files('lib/'+subarray[0],"#{directory}/source/"+subarray[1])
-    end
-  end
-
-  def copy_source
-    FileUtils.copy_entry("#{directory}/source", "#{directory}/_output")
-
-    parse_to_html
-  end
-
-  def parse_to_html
-    Dir.glob("#{directory}/_output/**/*.{md,markdown}") do |file|
-      new_file_ext = file.sub(/(.md|.markdown)/, ".html")
-      markdown     = File.read(file)
-      html         = Kramdown::Document.new(markdown).to_html
-      formatted    = inject(html)
-
-      File.write(new_file_ext, formatted)
-      File.delete(file)
-    end
-  end
-
-  def post_template(title)
-    t = Time.new
-    filename = "#{directory}/source/posts/#{t.strftime("%F")}" +
-    "-#{title.downcase.gsub(" ", "-")}.markdown"
-    File.write(filename, "# #{title}\n\nyour content here")
-  end
 end
 
 # :nocov:
@@ -78,7 +27,7 @@ if __FILE__ == $0
   puts fh.directory + '/source'
   fh.create_tree
   fh.populate_tree
-  fh.post_template("My Post")
+  fh.create_post("My Post")
   fh.copy_source
   FileUtils.remove_dir('test-dir', force = true)
 end

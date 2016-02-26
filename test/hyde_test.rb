@@ -5,54 +5,48 @@ class HydeTest < Minitest::Test
   DIR = Dir.pwd
 
   def setup
-    @fh = FileHandler.new('test-dir')
+    @hyde = Hyde.new(["new", "test-dir"])
     $stdout = StringIO.new
   end
 
   def teardown
-    @fh.move(DIR)
+    # FileHandler.new('test-dir').move(DIR)
     FileUtils.remove_dir('test-dir', force = true)
   end
 
   def test_it_removes_leading_slash
-    hyde = Hyde.new(["new", "/test-dir"])
-    assert_equal "test-dir (new)", hyde.process_subcommand
+    assert_equal "test-dir (new)", @hyde.process_subcommand
   end
 
   def test_it_understands_the_new_command
-    hyde = Hyde.new(["new", "test-dir"])
-    assert_equal "test-dir (new)", hyde.process_subcommand
+    assert_equal "test-dir (new)", @hyde.process_subcommand
   end
 
   def test_it_returns_error_if_dir_exists
-    hyde = Hyde.new(["new", "test-dir"])
-    @fh.create_tree
-    assert_equal "Error", hyde.process_subcommand
+    Builder.new('test-dir').create_tree
+    assert_equal "Error", @hyde.process_subcommand
   end
 
   def test_it_understands_the_build_command
-    hyde = Hyde.new(["new", "test-dir"])
-    hyde.process_subcommand
-    hyde = Hyde.new(["build", "test-dir"])
-    assert_equal "test-dir (build)", hyde.process_subcommand
+    @hyde.process_subcommand
+    build = Hyde.new(["build", "test-dir"])
+    assert_equal "test-dir (build)", build.process_subcommand
   end
 
   def test_it_understands_the_post_command
-    hyde = Hyde.new(["new", "test-dir"])
-    hyde.process_subcommand
-    hyde = Hyde.new(["post", "test-dir", "My Post"])
-    assert_equal "test-dir, My Post (post)", hyde.process_subcommand
+    @hyde.process_subcommand
+    post = Hyde.new(["post", "test-dir", "My Post"])
+    assert_equal "test-dir, My Post (post)", post.process_subcommand
   end
 
   def test_it_understands_the_watchfs_command_with_one_or_two_ARGS
-    hyde = Hyde.new(["new", "test-dir"])
-    hyde.process_subcommand
-    hyde = Hyde.new(["watchfs", "test-dir", "0.1"])
-    assert_equal "test-dir, (watchfs)", hyde.process_subcommand
+    @hyde.process_subcommand
+    watchfs = Hyde.new(["watchfs", "test-dir", "0.1"])
+    assert_equal "test-dir, (watchfs)", watchfs.process_subcommand
   end
 
   def test_it_rejects_bad_commands
-    hyde = Hyde.new(["pizza", "test-dir"])
-    assert_equal "Error", hyde.process_subcommand
+    pizza = Hyde.new(["pizza", "test-dir"])
+    assert_equal "Error", pizza.process_subcommand
   end
 end

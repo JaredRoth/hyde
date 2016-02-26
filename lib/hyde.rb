@@ -1,13 +1,13 @@
-require_relative 'file_handler'
+require_relative 'builder'
 
 class Hyde
-  attr_reader :method, :path, :args, :fh
+  attr_reader :method, :path, :args, :hyde
 
   def initialize(argv)
     @method = argv[0].downcase
     @path = test_path(argv[1])
-    @args = argv[2..-1].join
-    @fh = FileHandler.new(path)
+    @args = argv[2..-1].join(" ")
+    @hyde = Builder.new(path)
   end
 
   def process_subcommand
@@ -15,13 +15,13 @@ class Hyde
     when "new"
       new_command
     when "build"
-      fh.copy_source
+      hyde.copy_source
       "#{path} (build)"
     when "post"
-      fh.post_template(args)
+      hyde.create_post(args)
       "#{path}, #{args} (post)"
     when "watchfs"
-      monitor
+      watcher
       "#{path}, (watchfs)"
     else
       puts "That is not a valid command"
@@ -34,21 +34,21 @@ class Hyde
       puts "That path already exists! Try again."
       return "Error"
     end
-    fh.create_tree
-    fh.populate_tree
+    hyde.create_tree
+    hyde.populate_tree
     "#{path} (new)"
   end
 
-  def monitor
+  def watcher
     listener = Listen.to(path + '/source') do |modified, added, removed|
-      puts "modified file: #{modified}"
-      puts "added file: #{added}"
-      puts "removed file: #{removed}"
+      puts "modified file: #{modified}" unless modified.empty?
+      puts "added file: #{added}"       unless added.empty?
+      puts "removed file: #{removed}"   unless removed.empty?
     end
     listener.start
     args.empty? ? sleep : sleep(args.to_i * 60)
     puts "Run 'build' to commit changes or 'watchfs' to continue watching"
-    # fh.copy_source
+    # hyde.copy_source
   end
 
   def test_path(given_path)
