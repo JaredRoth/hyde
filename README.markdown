@@ -1,7 +1,7 @@
 
 
 
--[![Stories in Ready](https://badge.waffle.io/JaredRoth/hyde.png?label=ready&title=Ready)](https://waffle.io/JaredRoth/hyde)		
+[![Stories in Ready](https://badge.waffle.io/JaredRoth/hyde.png?label=ready&title=Ready)](https://waffle.io/JaredRoth/hyde)		
 # Hyde
 Hyde is the first paired project in Module 1 at the Turing School. Students build a lightweight application for blogging that provides a file structure and templates for users to make posts and pages in easy-to-read markdown language.
 
